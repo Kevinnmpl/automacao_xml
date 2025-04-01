@@ -1,54 +1,76 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from config import central
+import pandas as pd
 import download_arq
 import time
 
-navegador = webdriver.Chrome()
+driver = webdriver.Chrome()
 
-site = navegador.get("https://www.centraldaescola.com.br")
+site = driver.get("https://www.centraldaescola.com.br")
 
-# Maximiza a tela
-# maximizar_tela = navegador.maximize_window()
+driver.maximize_window()
 
-# selecionar tipo de usuário
-tipo_de_perfil = navegador.find_element(By.ID, "perfil")
-tipo_de_perfil.click()
-tipo_de_perfil.send_keys("Adm", Keys.ENTER)
+# seleciona tipo de usuário
+def tipoPerfil(idPerfil, perfil):
+    tipo_de_perfil = driver.find_element(By.ID, idPerfil)
+    tipo_de_perfil.click()
+    tipo_de_perfil.send_keys(perfil, Keys.ENTER)
 
-# Preencher o usuário e a senha
-input_de_usuario = navegador.find_element(By.ID, "login")
-input_de_usuario.send_keys("adelia.logon")
-input_de_senha = navegador.find_element(By.ID, "senha")
-input_de_senha.send_keys("123mudar")
+# preenche o usuário e a senha
+def preencherLogin(idUsuario, idSenha, usuario, senha):
+    input_de_usuario = driver.find_element(By.ID, idUsuario)
+    input_de_usuario.send_keys(usuario)
+    input_de_senha = driver.find_element(By.ID, idSenha)
+    input_de_senha.send_keys(senha)
+    time.sleep(15)
 
-# Base da URL
-url_base = navegador.get("https://www.centraldaescola.com.br/administrador/importacoes/financeiro_xml/165")
+# url da página de carga de xml
+def urlFinanceiro(url):
+    driver.get(url)
 
-# # ler csv das escolas
-# escolas = pd.read_csv("escolas.csv")
-
-# # adicionar id da escola no final da url
-# for _, linha in escolas.iterrows():
-#     # Gerar a URL para cada escola com o ID
-#     id = linha["id_escola"]
-#     url = f"{url_base}{id}"
+# lê csv das escolas e mudar id na url
+def mudarDeEscola(csv, url):
     
-#     navegador.get(url)
-#     time.sleep(4)
+    escolas = pd.read_csv(csv)
 
-# ultimo arquivo xml
-ultimo_arquivo_xml = download_arq.ultimo_arquivo
+    for _, linha in escolas.iterrows():
+        id = linha["id_escola"]
+        url_base = f"{url}{id}"
+        
+        driver.get(url_base)
+        time.sleep(4)
 
-# selecionar arquivo
-escolher_arquivo = navegador.find_element(By.ID, "file")
-escolher_arquivo.send_keys(ultimo_arquivo_xml)
+if __name__ == '__main__':
 
-# enviar arquivo
-botao_enviar = navegador.find_element(By.ID, "btnEnviar")
-botao_enviar.click
+    tipo_perfil = tipoPerfil('Adm')
 
-time.sleep(4)
+    login = preencherLogin(central['campo_usuario'], 
+                           central['campo_senha'], 
+                           central['usuario'], 
+                           central['senha'])
+
+    url_xml = central['url_financeiro']
+
+    escola = mudarDeEscola('escolas_teste.csv', url_xml)
+
+
+
+
+
+# # ultimo arquivo xml
+# ultimo_arquivo_xml = download_arq.ultimo_arquivo
+
+# # selecionar arquivo
+# escolher_arquivo = navegador.find_element(By.ID, "file")
+# escolher_arquivo.send_keys(ultimo_arquivo_xml)
+
+# # enviar arquivo
+# botao_enviar = navegador.find_element(By.ID, "btnEnviar")
+# botao_enviar.click
+
+# time.sleep(4)
 
 
 

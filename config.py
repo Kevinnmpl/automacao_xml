@@ -15,5 +15,6 @@ central = {
     'senha': "123mudar",
     'api_key': 'fa0a70053f98963df9203a55ef0e5e9b',
     'campo_usuario': "login",
-    'campo_senha': "senha"
+    'campo_senha': "senha",
+    'url_financeiro': "https://www.centraldaescola.com.br/administrador/importacoes/financeiro_xml/"
 }
