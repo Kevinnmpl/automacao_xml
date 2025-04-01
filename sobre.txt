@@ -1,0 +1,16 @@
+ARQUIVOS PYTHON:
+- athena.py: automação do athena
+- central.py: automação do central
+- login.py: para fazer login e resolver o captcha
+- config.py: tem as configurações como nome de classe, usuario, senha, url etc..
+- download__arq.py: pega o ultimo arquivo baixado
+
+CSV:
+- escola_teste.csv: deixei só 2 pra testar a mudança de id na url
+- escola_id_nome: todas as escolas com seus respectivos id's
+- nome_escolas: só os nomes das escolas pq pensei em usar no arquivo o athena
+
+TO-DO:
+- descobrir o que quebrou na resolução do captcha depois que organizei as funções
+- como baixar o arquivo sem que ele venha como "tmp" e sim como "xml"
+- qual será o fluxo para pegar os arquivos e exportar para o central
