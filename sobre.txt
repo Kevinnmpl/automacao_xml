@@ -1,7 +1,7 @@
 ARQUIVOS PYTHON:
 - athena.py: automação do athena
 - central.py: automação do central
-- login.py: para fazer login e resolver o captcha
+- login.py: para fazer login
 - config.py: tem as configurações como nome de classe, usuario, senha, url etc..
 - download__arq.py: pega o ultimo arquivo baixado
 
