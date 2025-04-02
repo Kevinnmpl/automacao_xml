@@ -5,13 +5,17 @@ import time
 from config import athena
 
 # inicializa o driver (google)
-driver = webdriver.Chrome()
+driver = webdriver.ChromeOptions()
+
+# define o diretório do perfil do usuário no chrome
+driver.add_argument(r'--user-data-dir=C:\Users\Galalaucio2\AppData\Local\Google\Chrome\User Data')
+driver.add_argument('--profile-directory=Default') # nome do perfil
+
+# inicializa o chrome com o perfil selecionado
+driver = webdriver.Chrome(options=driver)
 
 # roda a função do login
 navegador = driver.get("https://www.athenaweb.com.br")
-
-# maximiza a tela
-# navegador.maximize_window()
 
 # preenche o usuário e a senha
 def preencherLogin(classeUsuario, classeSenha, usuario, senha):
@@ -53,6 +57,7 @@ def selecionarTipoXml(id, tipo):
 def gerarXml(id):
     botao_gerar = driver.find_element(By.ID, id)
     botao_gerar.click()
+    time.sleep(50)
 
 if __name__ == '__main__':
 
