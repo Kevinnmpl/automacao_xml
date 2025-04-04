@@ -1,15 +1,20 @@
+import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
 from config import athena
 
+# carrega lista com os nomes das escolas
+df = pd.read_csv("nome_escolas.csv")
+nomes_escolas = df["nomefantasia"]
+
 # inicializa o driver (google)
 driver = webdriver.ChromeOptions()
 
 # define o diretório do perfil do usuário no chrome
 driver.add_argument(r'--user-data-dir=C:\Users\Galalaucio2\AppData\Local\Google\Chrome\User Data')
-driver.add_argument('--profile-directory=Default') # nome do perfil
+driver.add_argument('--profile-directory=Default') # pefil desejado
 
 # inicializa o chrome com o perfil selecionado
 driver = webdriver.Chrome(options=driver)
@@ -57,20 +62,20 @@ def selecionarTipoXml(id, tipo):
 def gerarXml(id):
     botao_gerar = driver.find_element(By.ID, id)
     botao_gerar.click()
-    time.sleep(50)
+    time.sleep(20)
 
 if __name__ == '__main__':
 
     login = preencherLogin(athena['campo_usuario'], athena['campo_senha'], athena['usuario'], athena['senha'])
 
-    campo_escola = selecionarCampoEscola('select2-selection__rendered')
+    for nome_escola in nomes_escolas:
 
-    nome_escola = digitarEscola('select2-search__field', 'Arte de Crescer')
+        driver.get("https://www.athenaweb.com.br")  # retorna à página inicial
 
-    botao_selecionar = pressionarBotaoSelecionar('btn-selectCedente')
+        selecionarCampoEscola('select2-selection__rendered' or 'btn btn-primary')  # seleciona o campo de escola
+        digitarEscola('select2-search__field', nome_escola)  # digita o nome da escola
+        pressionarBotaoSelecionar('btn-selectCedente')  # seleciona a escola
 
-    url_receber = urlModuloReceber('https://www.athenaweb.com.br/receber/manutencao')
-    
-    tipo_xml = selecionarTipoXml('tipo_select', 'boletos')
-    
-    geracao = gerarXml('btnGerar')
+        urlModuloReceber('https://www.athenaweb.com.br/receber/manutencao')  # abre o módulo de receber
+        selecionarTipoXml('tipo_select', 'boletos')  # seleciona o tipo de XML
+        gerarXml('btnGerar')  # gera o XML
