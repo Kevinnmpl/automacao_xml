@@ -64,6 +64,17 @@ def gerarXml(id):
     botao_gerar.click()
     time.sleep(20)
 
+# trocar a escola e confirmar
+def trocarEscola_e_confirmartroca(id_trocar, id_confirmar):
+    botao_trocar = driver.find_element(By.ID, id_trocar)
+    time.sleep(2)
+    botao_trocar.click()
+    time.sleep(2)
+    botao_confirmar = driver.find_element(By.ID, id_confirmar)
+    time.sleep(2)
+    botao_confirmar.click()
+     
+
 if __name__ == '__main__':
 
     login = preencherLogin(athena['campo_usuario'], athena['campo_senha'], athena['usuario'], athena['senha'])
@@ -71,8 +82,13 @@ if __name__ == '__main__':
     for nome_escola in nomes_escolas:
 
         driver.get("https://www.athenaweb.com.br")  # retorna à página inicial
+        
+        try:
+            selecionarCampoEscola('select2-selection__rendered') # seleciona o campo de escola
+        except:
+            trocarEscola_e_confirmartroca('btn-trocar-escola', 'confirma-troca') # trocar a escola e confirmar
+            selecionarCampoEscola('select2-selection__rendered') # seleciona o campo de escola
 
-        selecionarCampoEscola('select2-selection__rendered' or 'btn btn-primary')  # seleciona o campo de escola
         digitarEscola('select2-search__field', nome_escola)  # digita o nome da escola
         pressionarBotaoSelecionar('btn-selectCedente')  # seleciona a escola
 
