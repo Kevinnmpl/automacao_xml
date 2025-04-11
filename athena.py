@@ -74,7 +74,7 @@ def trocarEscola_e_confirmartroca(id_trocar, id_confirmar):
     time.sleep(2)
     botao_confirmar.click()
      
-
+# inicio do loop
 if __name__ == '__main__':
 
     login = preencherLogin(athena['campo_usuario'], athena['campo_senha'], athena['usuario'], athena['senha'])
